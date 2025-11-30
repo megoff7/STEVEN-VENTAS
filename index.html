@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eder Steven Ventas - Responsive</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+    body { background: radial-gradient(circle at top, #000, #060c21); color: #fff; overflow-x: hidden; }
+
+    header { text-align: center; padding: 40px 20px 20px; }
+    header h1 { font-size: 1.8rem; color: #00ffff; }
+
+    .carousel { display: block; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding: 10px; }
+    .carousel-track { display: flex; gap: 12px; }
+    .carousel img { width: 70vw; max-width: 260px; border-radius: 12px; cursor: pointer; }
+
+    @media (min-width: 900px){
+      .carousel { overflow:hidden; }
+      .carousel-track { animation: move 25s linear infinite; }
+      .carousel img { width:220px; height:140px; object-fit:cover; }
+    }
+
+    @keyframes move { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    .buttons { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; padding:10px; }
+    .btn { background: linear-gradient(90deg,#00ffff,#0077ff); color:#000; padding:10px 20px; border-radius:25px; border:none; cursor:pointer; font-weight:bold; text-decoration:none; }
+
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.85); justify-content:center; align-items:center; z-index:90; padding:20px; }
+    .modal-content { background:#07102a; padding:20px; border-radius:12px; max-width:95%; max-height:90vh; overflow:auto; }
+    .close { cursor:pointer; float:right; color:#00ffff; font-size:22px; }
+
+    .cards { display:none; flex-wrap:wrap; justify-content:center; gap:10px; padding:10px; }
+    .card { background:#071733; padding:15px; border-radius:12px; width:100%; max-width:350px; }
+
+    #imgFullscreen img { width:100%; max-height:85vh; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>BIENVENIDO A EDER STEVEN VENTAS</h1>
+</header>
+
+<section class="carousel">
+  <div class="carousel-track">
+    <img src="img/imagen1.jpeg">
+    <img src="img/imagen2.jpeg">
+    <img src="img/imagen3.jpeg">
+    <img src="img/imagen4.jpeg">
+    <img src="img/imagen5.jpeg">
+    <img src="img/imagen6.jpeg">
+    <img src="img/imagen7.jpeg">
+    <img src="img/imagen8.jpeg">
+    <img src="img/imagen9.jpeg">
+    <img src="img/imagen10.jpeg">
+    <img src="img/imagen11.jpeg">
+    <img src="img/imagen12.jpeg">
+  </div>
+</section>
+
+<div class="buttons" id="mainButtons">
+  <a class="btn" href="https://instagram.com/stevenv.ff" target="_blank">📸 Instagram</a>
+  <button class="btn btn-whatsapp" data-type="wa" data-url="https://wa.me/51921114873">🆘 WhatsApp Ayuda</button>
+  <button class="btn btn-whatsapp" data-type="channel" data-url="https://whatsapp.com/channel/0029VbBV6HzGE56hpRdNgM43/583">📢 Canal de WhatsApp</button>
+  <button class="btn btn-whatsapp" data-type="group" data-url="https://chat.whatsapp.com/E6UZhymVHGtDBLIr1s9Ekg?mode=hqrt3">👥 Grupo WhatsApp</button>
+  <button class="btn btn-whatsapp" id="btnComprarMetodo" data-type="comprar" data-url="https://wa.me/51921114873">🛒 Comprar Método</button>
+  <button class="btn" id="btnVerMetodo">🔐 Ver Método</button>
+</div>
+
+<!-- LOGIN -->
+<div id="modalLogin" class="modal"><div class="modal-content"><span class="close" id="closeLogin">X</span>
+  <h3>Iniciar Sesión</h3>
+  <input type="email" id="emailInput" placeholder="Correo" style="width:100%;padding:10px;margin:5px 0;">
+  <input type="password" id="passwordInput" placeholder="Contraseña" style="width:100%;padding:10px;margin:5px 0;">
+  <button class="btn" id="btnLogin">INICIAR</button>
+</div></div>
+
+<div id="floatingError" style="display:none;position:fixed;top:20px;right:20px;background:#ff4444;padding:12px;border-radius:8px;z-index:200;">❌ Correo o contraseña incorrecta</div>
+
+<!-- DESPUÉS DEL LOGIN -->
+<div id="afterLoginTop" style="display:none;text-align:center;padding:10px;font-weight:bold;color:#00ffff;">HAS INICIADO SESIÓN CORRECTAMENTE</div>
+<div class="cards" id="cardsArea">
+  <div class="card"><h3>Video Tutorial</h3><button class="btn small-btn" data-type="video" data-src="video/videotutorial.mp4">Ver</button></div>
+  <div class="card"><h3>VPN</h3><button class="btn small-btn" data-type="image" data-src="foto vpn/vpnfoto.jpeg">Ver</button></div>
+  <div class="card"><h3>¿Qué es GPT‑5.1?</h3><button class="btn small-btn" data-type="text" data-src="Chat GPT 5.1 PREMIUM es ...">Ver</button></div>
+</div>
+
+<!-- VIEWER -->
+<div id="modalViewer" class="modal"><div class="modal-content"><span class="close" id="closeViewer">X</span><div id="viewerBody"></div></div></div>
+
+<!-- FULLSCREEN IMG -->
+<div id="imgFullscreen" class="modal"><div class="modal-content" style="background:transparent;box-shadow:none;"><span class="close" id="closeImgFullscreen">X</span><img id="imgFullscreenSrc"></div></div>
+
+<!-- MODAL WHATSAPP -->
+<div id="modalEnviarWhatsApp" class="modal"><div class="modal-content"><span class="close" id="closeModalEnviar">X</span>
+  <h3>Antes de continuar</h3>
+  <p>Envía exactamente este mensaje:</p>
+  <div style="background:#001122;padding:10px;border-radius:8px;margin:10px 0;color:#cfeefc;"><code id="modalMensaje">Hola Steven, necesito el método de pago...</code></div>
+  <button class="btn" id="continuarWhats">Continuar</button>
+  <button class="btn" id="cancelarWhats">Cancelar</button>
+</div></div>
+
+<script>
+
+// SIEMPRE PEDIR LOGIN → no guardar sesión
+window.addEventListener('load',()=>{ localStorage.removeItem('sessionActive'); });
+
+const btnVerMetodo = document.getElementById('btnVerMetodo');
+const modalLogin = document.getElementById('modalLogin');
+const emailInput = document.getElementById('emailInput');
+const passwordInput = document.getElementById('passwordInput');
+const floatingError = document.getElementById('floatingError');
+const afterLoginTop = document.getElementById('afterLoginTop');
+const cardsArea = document.getElementById('cardsArea');
+
+btnVerMetodo.onclick = ()=>{ modalLogin.style.display='flex'; emailInput.focus(); };
+closeLogin.onclick = ()=>{ modalLogin.style.display='none'; };
+
+btnLogin.onclick = ()=>{
+  if(emailInput.value==='ederstevenventas@gmail.com' && passwordInput.value==='1818SGS'){
+    modalLogin.style.display='none';
+    afterLoginTop.style.display='block';
+    cardsArea.style.display='flex';
+  } else {
+    floatingError.style.display='block';
+    setTimeout(()=>{ floatingError.style.display='none'; },3000);
+  }
+};
+
+// VIEWER
+function openViewer(type,src){
+  viewerBody.innerHTML='';
+  if(type==='video'){
+    viewerBody.innerHTML = `<video src="${src}" controls style="width:100%;max-height:80vh;"></video>`;
+  } else if(type==='image'){
+    viewerBody.innerHTML = `<img src="${src}" style="width:100%;max-height:80vh;">`;
+  } else {
+    viewerBody.innerHTML = `<p style='white-space:pre-wrap;'>${src}</p>`;
+  }
+  modalViewer.style.display='flex';
+}
+
+closeViewer.onclick=()=>{ modalViewer.style.display='none'; };
+
+// ASIGNAR VIEWER A BOTONES
+const viewerBody = document.getElementById('viewerBody');
+const modalViewer = document.getElementById('modalViewer');
+
+document.querySelectorAll('[data-type]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const type=btn.dataset.type;
+    const src=btn.dataset.src;
+    if(type==='video'||type==='image'||type==='text') openViewer(type,src);
+  });
+});
+
+// CARRUSEL FULLSCREEN
+const imgFullscreen=document.getElementById('imgFullscreen');
+const imgFullscreenSrc=document.getElementById('imgFullscreenSrc');
+
+document.querySelectorAll('.carousel img').forEach(img=>{
+  img.onclick=()=>{
+    imgFullscreenSrc.src=img.src;
+    imgFullscreen.style.display='flex';
+  };
+});
+closeImgFullscreen.onclick=()=>{ imgFullscreen.style.display='none'; };
+
+// WHATSAPP
+const whatsappButtons=document.querySelectorAll('.btn-whatsapp');
+const modalEnviar=document.getElementById('modalEnviarWhatsApp');
+let pendingUrl=null;
+
+whatsappButtons.forEach(b=>{
+  b.onclick=()=>{
+    const type=b.dataset.type;
+    const url=b.dataset.url;
+    if(type==='comprar'){
+      modalMensaje.textContent='Hola Steven, necesito el método de pago para comprar el método de CHAT GPT 5.1 Premium x1 año.';
+      pendingUrl=url;
+      modalEnviar.style.display='flex';
+    } else if(type==='wa'){
+      const ayuda='hola Steven, necesito ayuda...';
+      window.open(url+'?text='+encodeURIComponent(ayuda),'_blank');
+    } else {
+      window.open(url,'_blank');
+    }
+  };
+});
+
+continuarWhats.onclick=()=>{
+  modalEnviar.style.display='none';
+  window.open(pendingUrl+'?text='+encodeURIComponent(modalMensaje.textContent),'_blank');
+};
+cancelarWhats.onclick=()=>{ modalEnviar.style.display='none'; };
+closeModalEnviar.onclick=()=>{ modalEnviar.style.display='none'; };
+
+</script>
+
+</body>
+</html>
